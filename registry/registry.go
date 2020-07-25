@@ -9,7 +9,7 @@ const (
 	// WildcardDomain indicates any domain
 	WildcardDomain = "*"
 	// DefaultDomain to use if none was provided in options
-	DefaultDomain = "micro"
+	DefaultDomain = "inf"
 )
 
 var (

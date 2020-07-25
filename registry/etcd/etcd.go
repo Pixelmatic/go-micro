@@ -24,8 +24,8 @@ import (
 )
 
 const (
-	prefix        = "/micro/registry/"
-	defaultDomain = "micro"
+	prefix        = "/platform"
+	defaultDomain = "inf"
 )
 
 type etcdRegistry struct {
@@ -296,7 +296,7 @@ func (e *etcdRegistry) registerNode(s *registry.Service, node *registry.Node, op
 	}
 
 	if logger.V(logger.TraceLevel, logger.DefaultLogger) {
-		logger.Tracef("Registering %s id %s with lease %v and leaseID %v and ttl %v", service.Name, node.Id, lgr, lgr.ID, options.TTL)
+		logger.Tracef("Registering %s id %s with ttl %v", service.Name, node.Id, options.TTL)
 	}
 
 	// create an entry for the node

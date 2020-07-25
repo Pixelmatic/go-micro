@@ -147,6 +147,7 @@ func (g *grpcClient) call(ctx context.Context, node *registry.Node, req client.R
 }
 
 func (g *grpcClient) stream(ctx context.Context, node *registry.Node, req client.Request, rsp interface{}, opts client.CallOptions) error {
+
 	var header map[string]string
 
 	if md, ok := metadata.FromContext(ctx); ok {
