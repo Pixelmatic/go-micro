@@ -424,10 +424,12 @@ func (g *grpcServer) processRequest(stream grpc.ServerStream, service *service, 
 					return err
 				}
 			default:
-				// default case user pass own error type that not proto based
+				/* default case user pass own error type that not proto based
 				statusCode = convertCode(verr)
 				statusDesc = verr.Error()
 				errStatus = status.New(statusCode, statusDesc)
+				*/
+				errStatus, _ = status.FromError(verr)
 			}
 
 			return errStatus.Err()
@@ -502,10 +504,12 @@ func (g *grpcServer) processStream(stream grpc.ServerStream, service *service, m
 				return err
 			}
 		default:
-			// default case user pass own error type that not proto based
+			errStatus, _ = status.FromError(verr)
+			/* default case user pass own error type that not proto based
 			statusCode = convertCode(verr)
 			statusDesc = verr.Error()
 			errStatus = status.New(statusCode, statusDesc)
+			*/
 		}
 		return errStatus.Err()
 	}
