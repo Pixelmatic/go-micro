@@ -227,7 +227,9 @@ func (r *router) watchRegistry(w registry.Watcher) error {
 
 	for {
 		res, err := w.Next()
-		logger.Warnf("Registry watcher event %v %v", res.Service, res.Action)
+		if res != nil {
+			logger.Warnf("Registry watcher event %v %v", res.Service, res.Action)
+		}
 		if err != nil {
 			if err != registry.ErrWatcherStopped {
 				return err
