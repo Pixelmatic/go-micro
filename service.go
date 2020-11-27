@@ -227,5 +227,6 @@ func (s *service) Run() error {
 	case <-s.opts.Context.Done():
 	}
 
+	logger.Warn("Service node is stopping now...")
 	return s.Stop()
 }

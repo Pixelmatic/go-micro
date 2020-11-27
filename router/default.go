@@ -227,6 +227,7 @@ func (r *router) watchRegistry(w registry.Watcher) error {
 
 	for {
 		res, err := w.Next()
+		logger.Warnf("Registry watcher event %v %v", *res.Service, res.Action)
 		if err != nil {
 			if err != registry.ErrWatcherStopped {
 				return err
@@ -469,6 +470,7 @@ func (r *router) start() error {
 	}
 
 	if r.options.Prewarm {
+		logger.Info("Prewarming router")
 		// add all local service routes into the routing table
 		if err := r.manageRegistryRoutes(r.options.Registry, "create"); err != nil {
 			return fmt.Errorf("failed adding registry routes: %s", err)
@@ -501,6 +503,7 @@ func (r *router) start() error {
 		return fmt.Errorf("failed creating registry watcher: %v", err)
 	}
 
+	r.running = true
 	go func() {
 		var err error
 
@@ -537,8 +540,6 @@ func (r *router) start() error {
 			}
 		}
 	}()
-
-	r.running = true
 
 	return nil
 }

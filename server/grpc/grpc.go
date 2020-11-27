@@ -954,6 +954,7 @@ func (g *grpcServer) Start() error {
 		}
 
 		// deregister self
+		logger.Info("Deregister service node now....")
 		if err := g.Deregister(); err != nil {
 			if logger.V(logger.ErrorLevel, logger.DefaultLogger) {
 				logger.Error("Server deregister error: ", err)
