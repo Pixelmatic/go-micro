@@ -1,7 +1,6 @@
 package router
 
 import (
-	"encoding/json"
 	"errors"
 	"fmt"
 	"sort"
@@ -228,10 +227,6 @@ func (r *router) watchRegistry(w registry.Watcher) error {
 
 	for {
 		res, err := w.Next()
-		if res != nil && res.Service != nil {
-			s, _ := json.Marshal(res.Service)
-			logger.Warnf("Registry watcher event %s %v", s, res.Action)
-		}
 		if err != nil {
 			if err != registry.ErrWatcherStopped {
 				return err
