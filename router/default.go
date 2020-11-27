@@ -56,7 +56,7 @@ func newRouter(opts ...Option) Router {
 	r.table = newTable(r.fetchRoutes)
 
 	// start the router and return
-	r.start()
+	// r.start()
 	return r
 }
 
@@ -467,6 +467,7 @@ func (r *router) start() error {
 	if r.running {
 		return nil
 	}
+	logger.Info("Starting service router")
 
 	if r.options.Prewarm {
 		logger.Info("Prewarming router")
@@ -690,20 +691,22 @@ func (r *router) Close() error {
 	case <-r.exit:
 		return nil
 	default:
-		close(r.exit)
+		if r.exit != nil {
+			close(r.exit)
 
-		// extract the events
-		r.drain()
+			// extract the events
+			r.drain()
 
-		r.sub.Lock()
-		// close advert subscribers
-		for id, sub := range r.subscribers {
-			// close the channel
-			close(sub)
-			// delete the subscriber
-			delete(r.subscribers, id)
+			r.sub.Lock()
+			// close advert subscribers
+			for id, sub := range r.subscribers {
+				// close the channel
+				close(sub)
+				// delete the subscriber
+				delete(r.subscribers, id)
+			}
+			r.sub.Unlock()
 		}
-		r.sub.Unlock()
 	}
 
 	// close and remove event chan
