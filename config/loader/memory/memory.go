@@ -44,6 +44,7 @@ type watcher struct {
 	reader  reader.Reader
 	version string
 	updates chan updateValue
+	sync.RWMutex
 }
 
 func (m *memory) watch(idx int, s source.Source) {
@@ -167,7 +168,10 @@ func (m *memory) update() {
 	m.RUnlock()
 
 	for _, w := range watchers {
-		if w.version >= snap.Version {
+		w.RLock()
+		v := w.version
+		w.RUnlock()
+		if v >= snap.Version {
 			continue
 		}
 
@@ -371,7 +375,7 @@ func (m *memory) String() string {
 }
 
 func (w *watcher) Next() (*loader.Snapshot, error) {
-	update := func(v reader.Value) *loader.Snapshot {
+	update := func(v reader.Value, version string) *loader.Snapshot {
 		w.value = v
 
 		cs := &source.ChangeSet{
@@ -384,7 +388,7 @@ func (w *watcher) Next() (*loader.Snapshot, error) {
 
 		return &loader.Snapshot{
 			ChangeSet: cs,
-			Version:   w.version,
+			Version:   version,
 		}
 
 	}
@@ -395,19 +399,21 @@ func (w *watcher) Next() (*loader.Snapshot, error) {
 			return nil, errors.New("watcher stopped")
 
 		case uv := <-w.updates:
+			w.Lock()
 			if uv.version <= w.version {
+				w.Unlock()
 				continue
 			}
 
 			v := uv.value
 
 			w.version = uv.version
+			w.Unlock()
 
 			if bytes.Equal(w.value.Bytes(), v.Bytes()) {
 				continue
 			}
-
-			return update(v), nil
+			return update(v, uv.version), nil
 		}
 	}
 }
