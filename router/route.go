@@ -15,6 +15,8 @@ var (
 type Route struct {
 	// Service is destination service name
 	Service string
+	// Service Version
+	Version string
 	// Address is service node address
 	Address string
 	// Gateway is route gateway
@@ -35,6 +37,6 @@ type Route struct {
 func (r *Route) Hash() uint64 {
 	h := fnv.New64()
 	h.Reset()
-	h.Write([]byte(r.Service + r.Address + r.Gateway + r.Network + r.Router + r.Link))
+	h.Write([]byte(r.Service + r.Version + r.Address + r.Gateway + r.Network + r.Router + r.Link))
 	return h.Sum64()
 }

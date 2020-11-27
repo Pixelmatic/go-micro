@@ -129,6 +129,7 @@ func (r *router) manageRoutes(service *registry.Service, action, network string)
 	for _, node := range service.Nodes {
 		route := Route{
 			Service:  service.Name,
+			Version:  service.Version,
 			Address:  node.Address,
 			Gateway:  "",
 			Network:  network,
