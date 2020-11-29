@@ -16,6 +16,7 @@ func NewSelector(opts ...selector.Option) selector.Selector {
 	r := &roundrobin{
 		routes: make(map[uint64]time.Time),
 		ticker: time.NewTicker(time.Minute),
+		exit:   make(chan bool),
 	}
 	go r.cleanRoutes()
 	return r
@@ -23,6 +24,7 @@ func NewSelector(opts ...selector.Option) selector.Selector {
 
 type roundrobin struct {
 	ticker *time.Ticker
+	exit   chan bool
 
 	// routes is a map with the key being a route's hash and the value being the last time it
 	// was used to perform a request
@@ -85,6 +87,7 @@ func (r *roundrobin) Record(srv router.Route, err error) error {
 
 func (r *roundrobin) Close() error {
 	r.ticker.Stop()
+	close(r.exit)
 	return nil
 }
 
@@ -95,20 +98,21 @@ func (r *roundrobin) String() string {
 func (r *roundrobin) cleanRoutes() {
 	for {
 		// watch for ticks until the ticker is closed
-		if _, ok := <-r.ticker.C; !ok {
+		select {
+		case <-r.exit:
 			return
-		}
+		case <-r.ticker.C:
+			r.Lock()
 
-		r.Lock()
+			// copy the slice to prevent concurrent map iteration and map write
+			rts := r.routes
 
-		// copy the slice to prevent concurrent map iteration and map write
-		rts := r.routes
-
-		for hash, t := range rts {
-			if t.Unix() < time.Now().Add(-routeTTL).Unix() {
-				delete(r.routes, hash)
+			for hash, t := range rts {
+				if t.Unix() < time.Now().Add(-routeTTL).Unix() {
+					delete(r.routes, hash)
+				}
 			}
+			r.Unlock()
 		}
-		r.Unlock()
 	}
 }
