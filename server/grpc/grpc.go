@@ -278,7 +278,7 @@ func (g *grpcServer) handler(srv interface{}, stream grpc.ServerStream) (err err
 			contentType: ct,
 			method:      fmt.Sprintf("%s.%s", serviceName, methodName),
 			codec:       codec,
-			stream:      true,
+			stream:      false,
 		}
 
 		response := &rpcResponse{

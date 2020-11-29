@@ -17,23 +17,25 @@ func microError(err error) error {
 	}
 
 	// grpc error
-	s, ok := status.FromError(err)
-	if !ok {
+	_, ok := status.FromError(err)
+	if ok {
 		return err
 	}
 
-	// return first error from details
-	if details := s.Details(); len(details) > 0 {
-		if verr, ok := details[0].(error); ok {
-			return microError(verr)
+	/*
+		// return first error from details
+		if details := s.Details(); len(details) > 0 {
+			if verr, ok := details[0].(error); ok {
+				return microError(verr)
+			}
 		}
-	}
 
-	// try to decode micro *errors.Error
-	if e := errors.Parse(s.Message()); e.Code > 0 {
-		return e // actually a micro error
-	}
+		// try to decode micro *errors.Error
+		if e := errors.Parse(s.Message()); e.Code > 0 {
+			return e // actually a micro error
+		}
+	*/
 
 	// fallback
-	return errors.InternalServerError("go.micro.client", s.Message())
+	return errors.InternalServerError("go.micro.client", err.Error())
 }

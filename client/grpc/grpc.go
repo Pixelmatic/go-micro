@@ -430,10 +430,6 @@ func (g *grpcClient) Call(ctx context.Context, req client.Request, rsp interface
 		g.opts.Selector.Record(*route, err)
 
 		// try and transform the error to a go-micro error
-		if verr, ok := err.(*errors.Error); ok {
-			return verr
-		}
-
 		return err
 	}
 
