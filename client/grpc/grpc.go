@@ -128,7 +128,11 @@ func (g *grpcClient) call(ctx context.Context, node *registry.Node, req client.R
 	go func() {
 		grpcCallOptions := []grpc.CallOption{
 			grpc.ForceCodec(cf),
-			grpc.CallContentSubtype(cf.Name())}
+			grpc.CallContentSubtype(cf.Name()),
+		}
+		if opts := getGrpcCallOptions(opts); opts != nil {
+			grpcCallOptions = append(grpcCallOptions, opts...)
+		}
 		if opts := g.getGrpcCallOptions(); opts != nil {
 			grpcCallOptions = append(grpcCallOptions, opts...)
 		}

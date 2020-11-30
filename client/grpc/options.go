@@ -129,3 +129,23 @@ func CallOptions(opts ...grpc.CallOption) client.CallOption {
 		o.Context = context.WithValue(o.Context, grpcCallOptions{}, opts)
 	}
 }
+
+func getGrpcCallOptions(opts client.CallOptions) []grpc.CallOption {
+	if opts.Context == nil {
+		return nil
+	}
+
+	v := opts.Context.Value(grpcCallOptions{})
+
+	if v == nil {
+		return nil
+	}
+
+	options, ok := v.([]grpc.CallOption)
+
+	if !ok {
+		return nil
+	}
+
+	return options
+}
