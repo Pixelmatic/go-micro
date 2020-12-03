@@ -141,8 +141,8 @@ var (
 	DefaultName                    = "go.micro.server"
 	DefaultVersion                 = "latest"
 	DefaultId                      = uuid.New().String()
-	DefaultServer           Server = newRpcServer()
-	DefaultRouter                  = newRpcRouter()
+	DefaultServer           Server = nil
+	DefaultRouter           Router = nil
 	DefaultRegisterCheck           = func(context.Context) error { return nil }
 	DefaultRegisterInterval        = time.Second * 30
 	DefaultRegisterTTL             = time.Second * 90

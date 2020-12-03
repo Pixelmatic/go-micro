@@ -140,11 +140,17 @@ func Registry(r registry.Registry) Option {
 	return func(o *Options) {
 		o.Registry = r
 		// Update router
-		o.Router.Init(router.Registry(r))
+		if o.Router != nil {
+			o.Router.Init(router.Registry(r))
+		}
 		// Update server
-		o.Server.Init(server.Registry(r))
+		if o.Server != nil {
+			o.Server.Init(server.Registry(r))
+		}
 		// Update Broker
-		o.Broker.Init(broker.Registry(r))
+		if o.Broker != nil {
+			o.Broker.Init(broker.Registry(r))
+		}
 	}
 }
 

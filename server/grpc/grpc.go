@@ -669,7 +669,7 @@ func (g *grpcServer) Register() error {
 		Metadata: md,
 	}
 
-	node.Metadata["broker"] = config.Broker.String()
+	// node.Metadata["broker"] = config.Broker.String()
 	node.Metadata["registry"] = config.Registry.String()
 	node.Metadata["server"] = g.String()
 	node.Metadata["transport"] = g.String()

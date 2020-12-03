@@ -626,7 +626,7 @@ func (c *cmd) Before(ctx *cli.Context) error {
 
 		*c.opts.Router = r(routerOpts...)
 		clientOpts = append(clientOpts, client.Router(*c.opts.Router))
-	} else if len(routerOpts) > 0 {
+	} else if len(routerOpts) > 0 && *c.opts.Router != nil {
 		if err := (*c.opts.Router).Init(routerOpts...); err != nil {
 			logger.Fatalf("Error configuring router: %v", err)
 		}
@@ -710,7 +710,7 @@ func (c *cmd) Before(ctx *cli.Context) error {
 		*c.opts.Broker = b(brokerOpts...)
 		serverOpts = append(serverOpts, server.Broker(*c.opts.Broker))
 		clientOpts = append(clientOpts, client.Broker(*c.opts.Broker))
-	} else if len(brokerOpts) > 0 {
+	} else if len(brokerOpts) > 0 && *c.opts.Broker != nil {
 		if err := (*c.opts.Broker).Init(brokerOpts...); err != nil {
 			logger.Fatalf("Error configuring broker: %v", err)
 		}

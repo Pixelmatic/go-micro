@@ -60,7 +60,7 @@ func (ew *etcdWatcher) Next() (*registry.Result, error) {
 			return nil, errors.New("could not get next")
 		}
 		for _, ev := range wresp.Events {
-			service := decode(ev.Kv.Value)
+			var service *registry.Service
 			var action string
 
 			switch ev.Type {
@@ -70,6 +70,7 @@ func (ew *etcdWatcher) Next() (*registry.Result, error) {
 				} else if ev.IsModify() {
 					action = "update"
 				}
+				service = decode(ev.Kv.Value)
 			case clientv3.EventTypeDelete:
 				action = "delete"
 

@@ -39,7 +39,7 @@ type Subscriber interface {
 }
 
 var (
-	DefaultBroker Broker = NewBroker()
+	DefaultBroker Broker = nil
 )
 
 func Init(opts ...Option) error {

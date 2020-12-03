@@ -13,7 +13,7 @@ const (
 )
 
 var (
-	DefaultRegistry = NewRegistry()
+	DefaultRegistry Registry = nil
 
 	// Not found error when GetService is called
 	ErrNotFound = errors.New("service not found")
