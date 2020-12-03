@@ -7,6 +7,8 @@ type QueryOption func(*QueryOptions)
 type QueryOptions struct {
 	// Service is destination service name
 	Service string
+	// Service version
+	Version string
 	// Address of the service
 	Address string
 	// Gateway is route gateway
@@ -17,6 +19,10 @@ type QueryOptions struct {
 	Router string
 	// Strategy is routing strategy
 	Strategy Strategy
+}
+
+func QueryVersion(s string) QueryOption {
+	return func(o *QueryOptions) { o.Version = s }
 }
 
 // QueryService sets service to query

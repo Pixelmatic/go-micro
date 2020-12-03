@@ -13,7 +13,7 @@ var (
 	// DefaultNetwork is default micro network
 	DefaultNetwork = "micro"
 	// DefaultRouter is default network router
-	DefaultRouter = NewRouter()
+	DefaultRouter Router = nil
 )
 
 // Router is an interface for a routing control plane
