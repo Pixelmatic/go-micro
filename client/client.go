@@ -33,6 +33,10 @@ type Message interface {
 type Request interface {
 	// The service to call
 	Service() string
+	// Version
+	Version() string
+	// Namespace
+	Namespace() string
 	// The action to take
 	Method() string
 	// The endpoint to invoke
@@ -92,7 +96,7 @@ type RequestOption func(*RequestOptions)
 
 var (
 	// DefaultClient is a default client to use out of the box
-	DefaultClient Client = newRpcClient()
+	DefaultClient Client = nil
 	// DefaultBackoff is the default backoff function for retries
 	DefaultBackoff = exponentialBackoff
 	// DefaultRetry is the default check-for-retry function for retries

@@ -1,14 +1,14 @@
 package micro
 
 import (
-	"github.com/micro/go-micro/v2/client"
+	// "github.com/micro/go-micro/v2/client"
 	"github.com/micro/go-micro/v2/cmd"
 	"github.com/micro/go-micro/v2/config"
 	"github.com/micro/go-micro/v2/debug/profile/http"
 	"github.com/micro/go-micro/v2/debug/profile/pprof"
 	"github.com/micro/go-micro/v2/debug/trace"
-	"github.com/micro/go-micro/v2/server"
-	"github.com/micro/go-micro/v2/store"
+	// "github.com/micro/go-micro/v2/server"
+	// "github.com/micro/go-micro/v2/store"
 
 	// clients
 	gcli "github.com/micro/go-micro/v2/client/grpc"
@@ -65,11 +65,11 @@ func init() {
 	// set defaults
 
 	// default client
-	client.DefaultClient = gcli.NewClient()
+	// client.DefaultClient = gcli.NewClient()
 	// default server
-	server.DefaultServer = gsrv.NewServer()
+	// server.DefaultServer = gsrv.NewServer()
 	// default store
-	store.DefaultStore = memStore.NewStore()
+	// store.DefaultStore = memStore.NewStore()
 	// set default trace
 	trace.DefaultTracer = memTracer.NewTracer()
 

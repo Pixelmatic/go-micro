@@ -10,6 +10,8 @@ import (
 
 type grpcRequest struct {
 	service     string
+	version     string
+	namespace   string
 	method      string
 	contentType string
 	request     interface{}
@@ -64,6 +66,14 @@ func (g *grpcRequest) ContentType() string {
 
 func (g *grpcRequest) Service() string {
 	return g.service
+}
+
+func (g *grpcRequest) Namespace() string {
+	return g.namespace
+}
+
+func (g *grpcRequest) Version() string {
+	return g.version
 }
 
 func (g *grpcRequest) Method() string {

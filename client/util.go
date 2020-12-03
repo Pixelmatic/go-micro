@@ -23,7 +23,11 @@ func LookupRoute(req Request, opts CallOptions) (*router.Route, error) {
 	}
 
 	// construct the router query
-	query := []router.QueryOption{router.QueryService(req.Service())}
+	query := []router.QueryOption{
+		router.QueryService(req.Service()),
+		router.QueryVersion(req.Version()),
+		router.QueryNetwork(req.Namespace()),
+	}
 
 	// if a custom network was requested, pass this to the router. By default the router will use it's
 	// own network, which is set during initialisation.

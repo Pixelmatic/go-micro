@@ -6,6 +6,8 @@ import (
 
 type rpcRequest struct {
 	service     string
+	version     string
+	namespace   string
 	method      string
 	endpoint    string
 	contentType string
@@ -42,6 +44,14 @@ func (r *rpcRequest) ContentType() string {
 
 func (r *rpcRequest) Service() string {
 	return r.service
+}
+
+func (r *rpcRequest) Version() string {
+	return r.version
+}
+
+func (r *rpcRequest) Namespace() string {
+	return r.namespace
 }
 
 func (r *rpcRequest) Method() string {
