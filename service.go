@@ -7,7 +7,6 @@ import (
 	"strings"
 	"sync"
 
-	"github.com/micro/go-micro/v2/auth"
 	"github.com/micro/go-micro/v2/client"
 	"github.com/micro/go-micro/v2/cmd"
 	"github.com/micro/go-micro/v2/debug/service/handler"
@@ -35,25 +34,25 @@ func newService(opts ...Option) Service {
 	serviceName := options.Server.Options().Name
 
 	// we pass functions to the wrappers since the values can change during initialisation
-	authFn := func() auth.Auth { return options.Server.Options().Auth }
+	// authFn := func() auth.Auth { return options.Server.Options().Auth }
 	cacheFn := func() *client.Cache { return options.Client.Options().Cache }
 
 	// wrap client to inject From-Service header on any calls
 	options.Client = wrapper.FromService(serviceName, options.Client)
 	options.Client = wrapper.TraceCall(serviceName, trace.DefaultTracer, options.Client)
 	options.Client = wrapper.CacheClient(cacheFn, options.Client)
-	options.Client = wrapper.AuthClient(authFn, options.Client)
+	// options.Client = wrapper.AuthClient(authFn, options.Client)
 
 	// pass the services auth namespace to the auth handler so it
 	// uses this to verify requests, preventing the reliance on the
 	// insecure Micro-Namespace header.
-	handlerNS := wrapper.AuthHandlerNamespace(options.Auth.Options().Issuer)
+	// handlerNS := wrapper.AuthHandlerNamespace(options.Auth.Options().Issuer)
 
 	// wrap the server to provide handler stats
 	options.Server.Init(
 		server.WrapHandler(wrapper.HandlerStats(stats.DefaultStats)),
 		server.WrapHandler(wrapper.TraceHandler(trace.DefaultTracer)),
-		server.WrapHandler(wrapper.AuthHandler(authFn, handlerNS)),
+		// server.WrapHandler(wrapper.AuthHandler(authFn, handlerNS)),
 	)
 
 	// set opts
